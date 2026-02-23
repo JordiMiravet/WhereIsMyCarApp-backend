@@ -14,7 +14,7 @@ export class Location {
 
 export const LocationSchema = SchemaFactory.createForClass(Location);
 
-@Schema()
+@Schema({ timestamps: true })
 export class Vehicle {
   @Prop({ required: true })
   name: string;
@@ -27,6 +27,9 @@ export class Vehicle {
 
   @Prop({ type: LocationSchema, required: true, _id: false })
   location: Location;
+
+  @Prop({ required: true })
+  userId: string;
 }
 
 export const VehicleSchema = SchemaFactory.createForClass(Vehicle);

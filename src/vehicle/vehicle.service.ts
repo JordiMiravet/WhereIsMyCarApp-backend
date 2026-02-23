@@ -11,22 +11,26 @@ export class VehicleService {
     @InjectModel(Vehicle.name) private vehicleModel: Model<VehicleDocument>,
   ) {}
 
-  async findAll(): Promise<Vehicle[]> {
-    return this.vehicleModel.find().exec();
+  async findAll(userId: string): Promise<Vehicle[]> {
+    return this.vehicleModel.find({ userId }).exec();
   }
 
-  async findOne(_id: string): Promise<Vehicle | null> {
-    return this.vehicleModel.findOne({ _id }).exec();
+  async findOne(_id: string, userId: string): Promise<Vehicle | null> {
+    return this.vehicleModel.findOne({ _id, userId }).exec();
   }
 
-  async create(vehicleDto: CreateVehicleDto): Promise<Vehicle> {
-    const newVehicle = new this.vehicleModel(vehicleDto);
+  async create(vehicleDto: CreateVehicleDto, userId: string): Promise<Vehicle> {
+    const newVehicle = new this.vehicleModel({
+      ...vehicleDto,
+      userId,
+    });
     return newVehicle.save();
   }
 
   async update(
     _id: string,
     updatedVehicle: UpdateVehicleDto,
+    userId: string,
   ): Promise<Vehicle | null> {
     const updateData = { ...updatedVehicle } as Partial<Vehicle>;
 
@@ -38,11 +42,11 @@ export class VehicleService {
     }
 
     return this.vehicleModel
-      .findOneAndUpdate({ _id }, updateData, { new: true })
+      .findOneAndUpdate({ _id, userId }, updateData, { new: true })
       .exec();
   }
 
-  async delete(_id: string): Promise<Vehicle | null> {
-    return this.vehicleModel.findOneAndDelete({ _id }).exec();
+  async delete(_id: string, userId: string): Promise<Vehicle | null> {
+    return this.vehicleModel.findOneAndDelete({ _id, userId }).exec();
   }
 }
