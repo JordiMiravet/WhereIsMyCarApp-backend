@@ -4,11 +4,13 @@ import { Model } from 'mongoose';
 import { Vehicle, VehicleDocument } from './vehicle.schema';
 import { CreateVehicleDto } from './dtos/create-vehicle.dto';
 import { UpdateVehicleDto } from './dtos/update-vehicle.dto';
+import { Event } from '../events/schemas/event.schema';
 
 @Injectable()
 export class VehicleService {
   constructor(
     @InjectModel(Vehicle.name) private vehicleModel: Model<VehicleDocument>,
+    @InjectModel(Event.name) private eventModel: Model<Event>,
   ) {}
 
   async findAll(userId: string): Promise<Vehicle[]> {
@@ -47,6 +49,7 @@ export class VehicleService {
   }
 
   async delete(_id: string, userId: string): Promise<Vehicle | null> {
+    await this.eventModel.deleteMany({ vehicleId: _id, userId }).exec();
     return this.vehicleModel.findOneAndDelete({ _id, userId }).exec();
   }
 }
