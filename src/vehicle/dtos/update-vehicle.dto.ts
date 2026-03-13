@@ -33,4 +33,8 @@ export class UpdateVehicleDto {
   @ValidateNested()
   @Type(() => LocationDto)
   location?: LocationDto;
+
+  @IsOptional()
+  @IsString()
+  imageUrl?: string;
 }

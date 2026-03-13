@@ -39,6 +39,9 @@ export class Vehicle {
   @Prop({ type: LocationSchema, required: true, _id: false })
   location: Location;
 
+  @Prop({ required: false })
+  imageUrl?: string;
+
   @Prop({ required: true })
   userId: string;
 

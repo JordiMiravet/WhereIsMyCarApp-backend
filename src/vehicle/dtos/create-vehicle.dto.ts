@@ -1,4 +1,9 @@
-import { IsNotEmpty, IsString, ValidateNested } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 
 class LocationDto {
@@ -26,4 +31,8 @@ export class CreateVehicleDto {
   @ValidateNested()
   @Type(() => LocationDto)
   location: LocationDto;
+
+  @IsOptional()
+  @IsString()
+  imageUrl?: string;
 }
